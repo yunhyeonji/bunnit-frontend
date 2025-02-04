@@ -1,8 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Container, Title} from '../components/PageComponent';
 
 function home(props) {
-  return <Text>Home</Text>;
+  return (
+    <Container>
+      <Title>HOME</Title>
+    </Container>
+  );
 }
 
 export default home;

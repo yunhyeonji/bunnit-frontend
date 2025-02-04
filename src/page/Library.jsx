@@ -1,8 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Container, Title} from '../components/PageComponent';
 
 function Library(props) {
-  return <Text>Library</Text>;
+  return (
+    <Container>
+      <Title>LIBRARY</Title>
+    </Container>
+  );
 }
 
 export default Library;

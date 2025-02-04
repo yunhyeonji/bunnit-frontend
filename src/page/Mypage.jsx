@@ -1,8 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Container, Title} from '../components/PageComponent';
 
 function Mypage(props) {
-  return <Text>my page</Text>;
+  return (
+    <Container>
+      <Title>MY PAGE</Title>
+    </Container>
+  );
 }
 
 export default Mypage;
