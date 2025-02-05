@@ -1,10 +1,10 @@
 import React from 'react';
-import {Container, Title} from '../components/PageComponent';
+import {Container, DefaultText} from '../components/PageComponent';
 
 function Library(props) {
   return (
     <Container>
-      <Title>LIBRARY</Title>
+      <DefaultText>LIBRARY</DefaultText>
     </Container>
   );
 }
