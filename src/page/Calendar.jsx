@@ -1,8 +1,13 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {CalendarContainer} from '../components/PageComponent';
+import CalendarComponent from '../components/CalendarComponent';
 
-function Calendar(props) {
-  return <Text>Calendar</Text>;
+function Calendar() {
+  return (
+    <CalendarContainer>
+      <CalendarComponent />
+    </CalendarContainer>
+  );
 }
 
 export default Calendar;
