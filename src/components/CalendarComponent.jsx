@@ -31,21 +31,23 @@ const Calendar = () => {
     const numberOfDays = lastDay.getDate(); // 해당 월의 마지막 날
     const days = []; // 해당 월의 날짜
 
-    // 앞쪽 빈 공간 추가
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      days.push(null);
+    const prevMonthLastDay = new Date(year, month, 0).getDate(); // 이전 달의 마지막 날
+
+    // 이전 달의 날짜 추가
+    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+      days.push({day: prevMonthLastDay - i, isPrevMonth: true});
     }
 
     // 날짜 추가
     for (let i = 1; i <= numberOfDays; i++) {
-      days.push(i);
+      days.push({day: i, isPrevMonth: false});
     }
 
     // 뒷쪽 빈 공간 추가
     const remainingDays = 7 - (days.length % 7);
     if (remainingDays !== 7) {
-      for (let i = 0; i < remainingDays; i++) {
-        days.push(null);
+      for (let i = 1; i <= remainingDays; i++) {
+        days.push({day: i, isNextMonth: true});
       }
     }
 
@@ -83,7 +85,12 @@ const Calendar = () => {
   };
 
   // 날짜 선택 핸들러
-  const handleSelectDate = day => {
+  const handleSelectDate = (day, isPrevMonth, isNextMonth) => {
+    if (isPrevMonth) {
+      changeMonth('prev');
+    } else if (isNextMonth) {
+      changeMonth('next');
+    }
     if (day) {
       setSelectedDate({year: currentYear, month: currentMonth, day});
     }
@@ -113,18 +120,30 @@ const Calendar = () => {
 
       {/* 날짜 표시 */}
       <View style={styles.calendar}>
-        {daysInMonth.map((day, index) => {
+        {daysInMonth.map((item, index) => {
           const isSelected =
             selectedDate.year === currentYear &&
             selectedDate.month === currentMonth &&
-            selectedDate.day === day;
+            selectedDate.day === item.day &&
+            !item.isPrevMonth &&
+            !item.isNextMonth;
 
           return (
             <TouchableOpacity
               key={index}
               style={[styles.dateCell, isSelected && styles.selectedDate]}
-              onPress={() => handleSelectDate(day)}>
-              {day && <DefaultText>{day}</DefaultText>}
+              disabled={item.isPrevMonth || item.isNextMonth}
+              onPress={() =>
+                handleSelectDate(item.day, item.isPrevMonth, item.isNextMonth)
+              }>
+              <DefaultText
+                style={
+                  item.isPrevMonth || item.isNextMonth
+                    ? styles.inactiveDate
+                    : null
+                }>
+                {item.day}
+              </DefaultText>
             </TouchableOpacity>
           );
         })}
@@ -141,7 +160,9 @@ const styles = StyleSheet.create({
   },
   // 년, 월, 변경 버튼 부분
   navigation: {
+    width: '95%',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
   },
@@ -180,6 +201,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderColor: 'skyblue',
     borderWidth: 4,
+  },
+  inactiveDate: {
+    color: 'lightgray',
   },
 });
 
